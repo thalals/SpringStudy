@@ -4,9 +4,13 @@ import hello.hellospring.domain.Member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import javax.transaction.Transactional;
+
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+
+@Transactional
 class MemoryMemberRepositoryTest {
     MemoryMemberRepository repository = new MemoryMemberRepository();
 
