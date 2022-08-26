@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-class MemberRepositoryDBTest {
+class MemberRepositoryV0Test {
 
     MemberRepositoryV0 repositoryV0 = new MemberRepositoryV0();
 
