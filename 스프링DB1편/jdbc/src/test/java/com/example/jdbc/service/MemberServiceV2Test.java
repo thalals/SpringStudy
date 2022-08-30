@@ -60,12 +60,12 @@ class MemberServiceV2Test {
         //then
         Member findMemberA = memberRepository.findById(member_A.getMemberId());
         Member findMemberB = memberRepository.findById(member_B.getMemberId());
-        assertThat(findMemberA.getMoney()).isEqualTo(10000 + money);
-        assertThat(findMemberB.getMoney()).isEqualTo(10000 - money);
+        assertThat(findMemberA.getMoney()).isEqualTo(10000 - money);
+        assertThat(findMemberB.getMoney()).isEqualTo(10000 + money);
     }
 
     @Test
-    @DisplayName("이체중 예외 발생")
+    @DisplayName("이체중 예외 발생 ㅅㅣ 롤백")
     void accountTransferEx() throws SQLException {
         //given
         Member member_A = new Member(MEMBER_A, 10000);
@@ -82,7 +82,7 @@ class MemberServiceV2Test {
         //then
         Member findMemberA = memberRepository.findById(member_A.getMemberId());
         Member findMemberB = memberRepository.findById(member_B.getMemberId());
-        assertThat(findMemberA.getMoney()).isEqualTo(10000 + money);
-        assertThat(findMemberB.getMoney()).isEqualTo(10000 - money);
+        assertThat(findMemberA.getMoney()).isEqualTo(10000 );
+        assertThat(findMemberB.getMoney()).isEqualTo(10000 );
     }
 }
