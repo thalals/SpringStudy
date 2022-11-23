@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Slf4j
