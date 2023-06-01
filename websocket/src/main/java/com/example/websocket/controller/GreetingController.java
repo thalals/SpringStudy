@@ -4,10 +4,10 @@ import com.example.websocket.stomp.GreetingResponse;
 import com.example.websocket.stomp.HelloMessageRequest;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
-@RestController
+@Controller
 public class GreetingController {
 
     @MessageMapping("/hello")
