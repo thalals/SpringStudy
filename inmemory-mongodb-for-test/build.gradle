@@ -30,8 +30,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.h2database:h2'
 
-	//https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo
-	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.3'
+	testImplementation 'de.bwaldvogel:mongo-java-server:1.44.0'
 
 }
 
