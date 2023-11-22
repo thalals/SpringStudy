@@ -1,2 +1,2 @@
 # SpringStudy
-인프런 김영한 - 스프링 공부
+Java & Spring boot 개인 학습 공간
