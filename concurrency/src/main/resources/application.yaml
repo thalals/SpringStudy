@@ -3,7 +3,7 @@ spring:
     properties:
       hibernate:
         format_sql: 'true'
-        show_sql: 'true'
+#        show_sql: 'true'
     hibernate:
       ddl-auto: create-drop
   datasource:
@@ -11,7 +11,13 @@ spring:
     url: jdbc:h2:mem:test;NON_KEYWORDS=USER
     username: sa
     password:
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE

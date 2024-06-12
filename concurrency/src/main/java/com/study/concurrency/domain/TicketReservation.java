@@ -2,12 +2,14 @@ package com.study.concurrency.domain;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 public class TicketReservation {
@@ -33,6 +35,7 @@ public class TicketReservation {
     }
 
     public static TicketReservation create(Ticket ticket, int number) {
+        log.info("예약 생성 : " + ticket.getNumber());
         return new TicketReservation(ticket, number);
     }
 

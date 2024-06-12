@@ -1,48 +1,41 @@
 package com.study.concurrency.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@Slf4j
+@Getter
 @NoArgsConstructor
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
-    private String name;
     @Column
     private Integer quantity;
     @Column
     private Integer stock;
-    @Column
-    private LocalDateTime performanceDate;
-    @Column
-    @CreatedDate
-    private LocalDateTime createdAt;
 
-    private Ticket(String name, Integer quantity, LocalDateTime performanceDate) {
-        this.name = name;
+    public Ticket(Long id, Integer quantity) {
+        this.id = id;
         this.quantity = quantity;
         this.stock = quantity;
-        this.performanceDate = performanceDate;
     }
 
-    public static Ticket create(String name, int quantity, LocalDateTime performanceDate) {
-        return new Ticket(name, quantity, performanceDate);
+    public static Ticket create(Long id, Integer quantity) {
+        return new Ticket(id, quantity);
     }
 
     public void decrease() {
         if (stock <= 0) {
             throw new RuntimeException("남은 수량 없음");
         }
-        stock -= 1;
+        this.stock = this.stock - 1;
+        log.info("남은 재고 : " + this.stock);
     }
 
 
