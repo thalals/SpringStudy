@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +47,9 @@ public class ThreadAccessTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                     try {
-                        ticketService.reservation(1L);
+                        ticketService.reservationWithoutTransactional(1L);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     } finally {
                         latch.countDown();
                     }

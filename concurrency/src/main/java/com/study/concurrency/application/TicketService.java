@@ -5,22 +5,41 @@ import com.study.concurrency.domain.TicketRepository;
 import com.study.concurrency.domain.TicketReservation;
 import com.study.concurrency.domain.TicketReservationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TicketService {
 
     private final TicketReservationRepository ticketReservationRepository;
     private final TicketRepository ticketRepository;
+    private final DataSource dataSource;
 
-    @Transactional
-    public void reservation(final Long ticketId) {
+    @Synchronized
+    public void reservationWithoutTransactional(final Long ticketId) throws SQLException {
 
-        final Ticket ticket = ticketRepository.findById(ticketId).get();
-        ticket.decrease();
+        Connection connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
 
-        ticketReservationRepository.save(TicketReservation.create(ticket, ticket.getNumber()));
+        try {
+            final Ticket ticket = ticketRepository.findById(ticketId).get();
+            ticket.decrease();
+
+            ticketRepository.save(ticket);
+            ticketReservationRepository.save(TicketReservation.create(ticket, ticket.getNumber()));
+
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            connection.rollback();
+            log.info("실패");
+        }
     }
 }
