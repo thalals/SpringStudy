@@ -1,9 +1,9 @@
 package com.study.concurrency.application;
 
 import com.study.concurrency.domain.Ticket;
-import com.study.concurrency.domain.TicketRepository;
+import com.study.concurrency.domain.Repository.TicketRepository;
 import com.study.concurrency.domain.TicketReservation;
-import com.study.concurrency.domain.TicketReservationRepository;
+import com.study.concurrency.domain.Repository.TicketReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;

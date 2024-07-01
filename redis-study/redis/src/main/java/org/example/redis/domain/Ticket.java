@@ -1,15 +1,17 @@
-package com.study.concurrency.domain;
+package org.example.redis.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Slf4j
 @Getter
+@ToString
 @NoArgsConstructor
 public class Ticket {
 
@@ -28,19 +30,6 @@ public class Ticket {
 
     public static Ticket create(Long id, Integer quantity) {
         return new Ticket(id, quantity);
-    }
-
-    public void decrease() {
-        if (stock <= 0) {
-            throw new RuntimeException("남은 수량 없음");
-        }
-        this.stock = this.stock - 1;
-        log.info("남은 재고 : " + this.stock);
-    }
-
-
-    public int getNumber() {
-        return quantity - stock + 1;
     }
 
     public void changeQuantity(int quantity) {

@@ -2,8 +2,8 @@ package com.study.concurrency;
 
 import com.study.concurrency.application.TicketService;
 import com.study.concurrency.domain.Ticket;
-import com.study.concurrency.domain.TicketRepository;
-import com.study.concurrency.domain.TicketReservationRepository;
+import com.study.concurrency.domain.Repository.TicketRepository;
+import com.study.concurrency.domain.Repository.TicketReservationRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
