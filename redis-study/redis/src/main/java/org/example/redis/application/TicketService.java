@@ -16,12 +16,12 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    @Cacheable(value = "findTicketAll", key = "#root.methodName", cacheManager = "cacheManager")
+    @Cacheable(cacheNames = "findTicketAll", key = "#root.methodName", cacheManager = "cacheManager")
     public List<Ticket> getTickets() {
         return ticketRepository.findAll();
     }
 
-    @CacheEvict(value = "findTicketAll", allEntries = true, cacheManager = "cacheManager")
+    @CacheEvict(cacheNames = "findTicketAll", allEntries = true, cacheManager = "cacheManager")
     public void updateTicketQuantity(long ticketId) {
 
         Ticket ticket = ticketRepository.findById(ticketId).get();
