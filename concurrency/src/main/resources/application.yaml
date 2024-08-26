@@ -5,17 +5,19 @@ spring:
         format_sql: 'true'
 #        show_sql: 'true'
     hibernate:
-      ddl-auto: create-drop
-#  datasource:
+      ddl-auto: none
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/concurrency
+    username: root
+    password: 1234
+    hikari:
+      maximum-pool-size: 100
+
 #    driver-class-name: org.h2.Driver
 #    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
 #    username: sa
 #    password:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/concurrency
-    username: root
-    password: 1234
 
 #logging:
 #  level:
@@ -26,3 +28,11 @@ spring:
 #          descriptor:
 #            sql:
 #              BasicBinder: TRACE
+
+logging:
+  level:
+    org.springframework.kafka.*: OFF
+    org.springframework.kafka.listener.[KafkaMessageListenerContainer$ListenerConsumer]: OFF
+    org.apache.kafka.*: OFF
+    kafka.*: OFF
+    org.apache.zookeeper.*: OFF
