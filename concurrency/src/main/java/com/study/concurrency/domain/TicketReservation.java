@@ -35,7 +35,7 @@ public class TicketReservation {
     }
 
     public static TicketReservation create(Ticket ticket, int number) {
-        log.info("예약 생성 : " + ticket.getNumber());
+        log.info("예약 생성 : " + number);
         return new TicketReservation(ticket, number);
     }
 

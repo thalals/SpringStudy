@@ -2,6 +2,7 @@ package com.study.concurrency.application;
 
 import com.study.concurrency.domain.Repository.TicketCountRepository;
 import com.study.concurrency.domain.Repository.TicketRepository;
+import com.study.concurrency.domain.Repository.TicketRepositoryForLock;
 import com.study.concurrency.domain.Repository.TicketReservationRepository;
 import com.study.concurrency.domain.Ticket;
 import com.study.concurrency.domain.TicketReservation;
@@ -28,7 +29,13 @@ public class TicketService {
 
     private final TicketCountRepository ticketCountRepository;
     private final TicketReservationProducer ticketReservationProducer;
+    private final TicketRepositoryForLock ticketRepositoryForLock;
 
+    /**
+     * Thread Access Block <br>
+     * 1. @Synchronized    <br>
+     * 2. redis + kafka(메세징 시스템)
+     */
     @Synchronized
     public void reservationWithoutTransactional(final Long ticketId) throws SQLException {
 
@@ -49,9 +56,11 @@ public class TicketService {
     }
 
     private void reservationSuccess(final Ticket ticket) {
+        int number = ticket.getNumber();
+
         ticket.decrease();
         ticketRepository.save(ticket);
-        ticketReservationRepository.save(TicketReservation.create(ticket, ticket.getNumber()));
+        ticketReservationRepository.save(TicketReservation.create(ticket, number));
     }
 
     @Transactional
@@ -69,6 +78,20 @@ public class TicketService {
 
             ticketReservationProducer.reserve(ticketId, increment);
         }
+    }
+
+    /**
+     *  Lock 을 사용   <br>
+     *  1. Pessimistic Lock (비관적)   <br>
+     *  2. Optimistic Lock (낙관적)    <br>
+     *  3. Named Lock   (?)          <br>
+     *  4. 분산 락
+     */
+    @Transactional
+    public void reservationToPessimisticLock(final Long ticketId) {
+
+        final Ticket ticket = ticketRepositoryForLock.findById(ticketId).get();
+        reservationSuccess(ticket);
     }
 
 }
