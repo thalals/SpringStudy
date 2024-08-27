@@ -11,8 +11,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.data.domain.Page;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -22,6 +20,8 @@ import org.springframework.web.servlet.View;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static java.lang.Thread.sleep;
 
 @Service
 @Slf4j
@@ -90,7 +90,7 @@ public class TicketService {
      *  Lock 을 사용   <br>
      *  1. Pessimistic Lock (비관적)   <br>
      *  2. Optimistic Lock (낙관적)    <br>
-     *  3. Named Lock   (?)          <br>
+     *  3. Named Lock             <br>
      *  4. 분산 락
      */
     @Transactional
@@ -110,5 +110,14 @@ public class TicketService {
 
                 final Ticket ticket = ticketRepositoryForLock.findByWithOptimisticLock(ticketId).get();
                 reservationSuccess(ticket);
+    }
+
+//    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void reservationToNamedLock(final Long ticketId) {
+
+        final Ticket ticket = ticketRepository.findById(ticketId).get();
+        reservationSuccess(ticket);
+
     }
 }
