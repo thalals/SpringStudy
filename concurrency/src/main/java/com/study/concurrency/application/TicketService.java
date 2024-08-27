@@ -6,13 +6,18 @@ import com.study.concurrency.domain.Repository.TicketRepositoryForLock;
 import com.study.concurrency.domain.Repository.TicketReservationRepository;
 import com.study.concurrency.domain.Ticket;
 import com.study.concurrency.domain.TicketReservation;
-import com.study.concurrency.infra.TicketReservationConsumer;
 import com.study.concurrency.infra.TicketReservationProducer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.View;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -30,6 +35,7 @@ public class TicketService {
     private final TicketCountRepository ticketCountRepository;
     private final TicketReservationProducer ticketReservationProducer;
     private final TicketRepositoryForLock ticketRepositoryForLock;
+    private final View error;
 
     /**
      * Thread Access Block <br>
@@ -90,8 +96,19 @@ public class TicketService {
     @Transactional
     public void reservationToPessimisticLock(final Long ticketId) {
 
-        final Ticket ticket = ticketRepositoryForLock.findById(ticketId).get();
+        final Ticket ticket = ticketRepositoryForLock.findByWithPessimisticLock(ticketId).get();
         reservationSuccess(ticket);
     }
 
+    @Transactional
+    @Retryable(
+        retryFor = {ObjectOptimisticLockingFailureException.class},
+        maxAttempts = 10,
+        backoff = @Backoff(delay = 100)
+    )
+    public void reservationToOptimisticLock(final Long ticketId) throws InterruptedException {
+
+                final Ticket ticket = ticketRepositoryForLock.findByWithOptimisticLock(ticketId).get();
+                reservationSuccess(ticket);
+    }
 }

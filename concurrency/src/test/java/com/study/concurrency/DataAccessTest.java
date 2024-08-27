@@ -43,7 +43,7 @@ class DataAccessTest {
 
     @Test
     @DisplayName("비관적 락 사용")
-    void concurrencyFailTest() throws InterruptedException {
+    void concurrencyToPessimistic() throws InterruptedException {
         //give
         Ticket ticket = ticketRepository.save(Ticket.create(1L, 100));
 
@@ -75,4 +75,41 @@ class DataAccessTest {
             () -> assertThat(ticketReservationRepository.findAll().size()).isEqualTo(100)
         );
     }
+    @Test
+    @DisplayName("낙관적 락 사용")
+    void concurrencyToOptimistic() throws InterruptedException {
+        //give
+        Ticket ticket = ticketRepository.save(Ticket.create(1L, 100));
+
+        //when
+        int threadCount = 100;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                    try {
+                        ticketService.reservationToOptimisticLock(1L);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        latch.countDown();
+                    }
+                }
+            );
+        }
+
+        latch.await();
+
+        Ticket result = ticketRepository.findById(1L).get();
+
+        //then
+        assertAll(
+            () -> assertThat(result.getStock()).isZero(),
+            () -> assertThat(ticketReservationRepository.findAll().size()).isEqualTo(100)
+        );
+    }
+
 }

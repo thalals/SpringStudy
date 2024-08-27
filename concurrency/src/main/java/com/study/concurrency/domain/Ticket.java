@@ -3,6 +3,7 @@ package com.study.concurrency.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,8 @@ public class Ticket {
     private Integer quantity;
     @Column
     private Integer stock;
+    @Version
+    private Integer version;
 
     public Ticket(Long id, Integer quantity) {
         this.id = id;
