@@ -112,7 +112,6 @@ public class TicketService {
                 reservationSuccess(ticket);
     }
 
-//    @Transactional
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void reservationToNamedLock(final Long ticketId) {
 
