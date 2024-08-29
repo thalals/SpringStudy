@@ -48,7 +48,7 @@ class ThreadAccessTest {
     }
 
     @Test
-    @DisplayName("Redis로 제어 성공")
+    @DisplayName("Redis + Kafka 제어 성공")
     void concurrencyFailTest() throws InterruptedException {
 
         //give

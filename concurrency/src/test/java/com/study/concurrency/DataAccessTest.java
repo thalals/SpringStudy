@@ -1,5 +1,6 @@
 package com.study.concurrency;
 
+import com.study.concurrency.application.RedissonLockFacade;
 import com.study.concurrency.application.TicketService;
 import com.study.concurrency.application.NamedLockFacade;
 import com.study.concurrency.domain.Repository.TicketCountRepository;
@@ -40,8 +41,12 @@ class DataAccessTest {
 
     @Autowired
     TicketRepositoryForLock ticketRepositoryForLock;
+
     @Autowired
-    private NamedLockFacade namedLockFacade;
+    NamedLockFacade namedLockFacade;
+
+    @Autowired
+    RedissonLockFacade redissonLockFacade;
 
     @Test
     @DisplayName("비관적 락 사용")
@@ -131,7 +136,7 @@ class DataAccessTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                     try {
-                        namedLockFacade.setNamedLock(1L);
+                        namedLockFacade.tryNamedLock(1L);
                     } finally {
                         latch.countDown();
                     }
@@ -150,4 +155,39 @@ class DataAccessTest {
         );
     }
 
+    @Test
+    @DisplayName("Redis Redisson 락 사용")
+    void concurrencyToRedisRedisson() throws InterruptedException {
+        //give
+        Ticket ticket = ticketRepository.save(Ticket.create(1L, 100));
+
+        //when
+        int threadCount = 100;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                    try {
+//                        ticketService.reservationToRedisson(1L);
+                        redissonLockFacade.releaseRedissonLockForTransactional(1L);
+                    } finally {
+                        latch.countDown();
+                    }
+                }
+            );
+        }
+
+        latch.await();
+
+        Ticket result = ticketRepository.findById(1L).get();
+
+        //then
+        assertAll(
+            () -> assertThat(result.getStock()).isZero(),
+            () -> assertThat(ticketReservationRepository.findAll().size()).isEqualTo(100)
+        );
+    }
 }

@@ -13,7 +13,7 @@ public class NamedLockFacade {
     private final TicketRepositoryForLock ticketRepositoryForLock;
 
     @Transactional
-    public void setNamedLock(Long ticketId) {
+    public void tryNamedLock(Long ticketId) {
 
         try {
             ticketRepositoryForLock.getLock("ticket");

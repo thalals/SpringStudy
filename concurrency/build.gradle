@@ -35,6 +35,7 @@ dependencies {
 
 	//redis
 	implementation 'org.springframework.data:spring-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.27.0'
 	implementation 'io.lettuce:lettuce-core'
 
 	//kafka

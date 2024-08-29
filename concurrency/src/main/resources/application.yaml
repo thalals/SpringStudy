@@ -10,16 +10,16 @@ spring:
     open-in-view: false
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/concurrency
-    username: root
-    password: 1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/concurrency
+#    username: root
+#    password: 1234
     hikari:
-      maximum-pool-size: 200
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
-#    username: sa
-#    password:
+      maximum-pool-size: 100
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
+    username: sa
+    password:
 
 logging:
   level:

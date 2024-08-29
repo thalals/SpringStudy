@@ -1,5 +1,6 @@
 package com.study.concurrency.application;
 
+import com.study.concurrency.config.redisson.RedissonLock;
 import com.study.concurrency.domain.Repository.TicketCountRepository;
 import com.study.concurrency.domain.Repository.TicketRepository;
 import com.study.concurrency.domain.Repository.TicketRepositoryForLock;
@@ -15,13 +16,10 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.View;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static java.lang.Thread.sleep;
 
 @Service
 @Slf4j
@@ -35,7 +33,6 @@ public class TicketService {
     private final TicketCountRepository ticketCountRepository;
     private final TicketReservationProducer ticketReservationProducer;
     private final TicketRepositoryForLock ticketRepositoryForLock;
-    private final View error;
 
     /**
      * Thread Access Block <br>
@@ -87,11 +84,11 @@ public class TicketService {
     }
 
     /**
-     *  Lock 을 사용   <br>
-     *  1. Pessimistic Lock (비관적)   <br>
-     *  2. Optimistic Lock (낙관적)    <br>
-     *  3. Named Lock             <br>
-     *  4. 분산 락
+     * Lock 을 사용   <br>
+     * 1. Pessimistic Lock (비관적)   <br>
+     * 2. Optimistic Lock (낙관적)    <br>
+     * 3. Named Lock             <br>
+     * 4. 분산 락
      */
     @Transactional
     public void reservationToPessimisticLock(final Long ticketId) {
@@ -108,8 +105,8 @@ public class TicketService {
     )
     public void reservationToOptimisticLock(final Long ticketId) throws InterruptedException {
 
-                final Ticket ticket = ticketRepositoryForLock.findByWithOptimisticLock(ticketId).get();
-                reservationSuccess(ticket);
+        final Ticket ticket = ticketRepositoryForLock.findByWithOptimisticLock(ticketId).get();
+        reservationSuccess(ticket);
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -118,5 +115,13 @@ public class TicketService {
         final Ticket ticket = ticketRepository.findById(ticketId).get();
         reservationSuccess(ticket);
 
+    }
+
+    @Transactional
+    @RedissonLock(lockKey = "reservation")
+    public void reservationToRedisson(final Long ticketId) {
+
+        final Ticket ticket = ticketRepository.findById(ticketId).get();
+        reservationSuccess(ticket);
     }
 }
