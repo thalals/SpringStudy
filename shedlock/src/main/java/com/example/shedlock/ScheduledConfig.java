@@ -35,7 +35,7 @@ public class ScheduledConfig {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
 
         scheduler.setPoolSize(10);
-        scheduler.setThreadNamePrefix("my-scheduler-thread-");
+        scheduler.setThreadNamePrefix("my-scheduler-");
         scheduler.initialize();
 
         return scheduler;
