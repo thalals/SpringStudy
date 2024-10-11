@@ -1,4 +1,4 @@
-package com.example.shedlock;
+package com.example.shedlock.schedlock;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

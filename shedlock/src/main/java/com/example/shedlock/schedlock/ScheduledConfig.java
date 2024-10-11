@@ -1,4 +1,4 @@
-package com.example.shedlock;
+package com.example.shedlock.schedlock;
 
 import javax.sql.DataSource;
 import net.javacrumbs.shedlock.core.LockProvider;
