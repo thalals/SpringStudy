@@ -27,8 +27,8 @@ public class ScheduledTask {
 //        log.info("{}, Task one done. ⚙️⚙️", LocalDateTime.now());
 //    }
 
-    @Scheduled(fixedRate = 1000)
-    @SchedulerLock(name = "scheduledTaskName")
+    @Scheduled(fixedRate = 60000)
+    @SchedulerLock(name = "lock-name")
     public void taskTwo() throws InterruptedException {
         log.info("{}, Task two start️. ⭐️", LocalDateTime.now());
 

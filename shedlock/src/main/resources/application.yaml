@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/shedlock  # MySQL 서버 주소와 데이터베이스 이름
+    url: jdbc:mysql://host.docker.internal:3306/shedlock  # MySQL 서버 주소와 데이터베이스 이름
     username: root                             # MySQL 사용자 이름
     password: 1234                             # MySQL 사용자 비밀번호
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -10,7 +10,7 @@ spring:
   jpa:
     show-sql: true                             # SQL 쿼리 로그를 콘솔에 출력
     hibernate:
-      ddl-auto: create-drop                    # 애플리케이션 시작 시 테이블 생성, 종료 시 삭제
+      ddl-auto: none                    # 애플리케이션 시작 시 테이블 생성, 종료 시 삭제
     properties:
       hibernate:
         format_sql: true                       # 포맷된 형식으로 SQL 쿼리 출력
