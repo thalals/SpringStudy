@@ -1,8 +1,8 @@
 package com.entity_isolation.isolation.orders.api;
 
 import com.entity_isolation.isolation.orders.application.OrderService;
-import com.entity_isolation.isolation.orders.dto.OrderCreateRequest;
-import com.entity_isolation.isolation.orders.dto.OrderCreateResponse;
+import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequest;
+import com.entity_isolation.isolation.orders.dto.response.OrderCreateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

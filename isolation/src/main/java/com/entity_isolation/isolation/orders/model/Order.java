@@ -1,8 +1,8 @@
 package com.entity_isolation.isolation.orders.model;
 
-import com.entity_isolation.isolation.orders.dto.OrderCreateRequest;
-import com.entity_isolation.isolation.orders.model.mapper.OrderCustomerMapper;
-import com.entity_isolation.isolation.orders.model.mapper.OrderPaymentInfoMapper;
+import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequest;
+import com.entity_isolation.isolation.orders.model.dto.OrderCustomerDto;
+import com.entity_isolation.isolation.orders.model.dto.OrderPaymentInfoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -89,7 +89,7 @@ public class Order {
     }
 
     //Mapper
-    public static Order createOf(OrderCustomerMapper customer, OrderPaymentInfoMapper paymentInfo) {
+    public static Order createOf(OrderCustomerDto customer, OrderPaymentInfoDto paymentInfo) {
 
         return Order.builder()
             .orderNumber(generateOrderNumber())

@@ -1,8 +1,8 @@
-package com.entity_isolation.isolation.orders.dto;
+package com.entity_isolation.isolation.orders.dto.request;
 
 import com.entity_isolation.isolation.orders.model.Order;
-import com.entity_isolation.isolation.orders.model.mapper.OrderCustomerMapper;
-import com.entity_isolation.isolation.orders.model.mapper.OrderPaymentInfoMapper;
+import com.entity_isolation.isolation.orders.model.dto.OrderCustomerDto;
+import com.entity_isolation.isolation.orders.model.dto.OrderPaymentInfoDto;
 import java.math.BigDecimal;
 
 public record OrderCreateRequestNew(
@@ -29,7 +29,7 @@ public record OrderCreateRequestNew(
         );
     }
 
-    private String getCustomerName() {
+    public String getCustomerName() {
 
         if ("일본".equals(country)) {
             return kanaFirstName + " " + kanaLastName;
@@ -42,8 +42,8 @@ public record OrderCreateRequestNew(
     //mapper 이용
     public Order toEntityFromMapper() {
 
-        OrderCustomerMapper customerMapper = new OrderCustomerMapper(getCustomerName(), email, phone);
-        OrderPaymentInfoMapper paymentInfoMapper = OrderPaymentInfoMapper.of(paymentType,
+        OrderCustomerDto customerMapper = new OrderCustomerDto(getCustomerName(), email, phone);
+        OrderPaymentInfoDto paymentInfoMapper = OrderPaymentInfoDto.of(paymentType,
             receivedAmount, deliveryFee);
 
         return Order.createOf(customerMapper, paymentInfoMapper);
