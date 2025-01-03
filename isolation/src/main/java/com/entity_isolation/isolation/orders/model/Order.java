@@ -1,6 +1,6 @@
 package com.entity_isolation.isolation.orders.model;
 
-import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequest;
+import com.entity_isolation.isolation.orders.application.request.OrderCreateRequest;
 import com.entity_isolation.isolation.orders.model.dto.OrderCustomerDto;
 import com.entity_isolation.isolation.orders.model.dto.OrderPaymentInfoDto;
 import jakarta.persistence.Entity;

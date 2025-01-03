@@ -1,4 +1,4 @@
-package com.entity_isolation.isolation.orders.dto.request;
+package com.entity_isolation.isolation.orders.application.request;
 
 import com.entity_isolation.isolation.orders.model.Order;
 import java.math.BigDecimal;

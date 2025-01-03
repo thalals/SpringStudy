@@ -1,8 +1,8 @@
 package com.entity_isolation.isolation.orders.application;
 
 import com.entity_isolation.isolation.orders.dao.OrderRepository;
-import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequest;
-import com.entity_isolation.isolation.orders.dto.response.OrderCreateResponse;
+import com.entity_isolation.isolation.orders.application.request.OrderCreateRequest;
+import com.entity_isolation.isolation.orders.application.response.OrderCreateResponse;
 import com.entity_isolation.isolation.orders.model.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

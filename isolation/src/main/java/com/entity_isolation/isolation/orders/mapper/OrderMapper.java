@@ -1,8 +1,8 @@
 package com.entity_isolation.isolation.orders.mapper;
 
-import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequest;
-import com.entity_isolation.isolation.orders.dto.request.OrderCreateRequestNew;
-import com.entity_isolation.isolation.orders.dto.response.OrderCreateResponse;
+import com.entity_isolation.isolation.orders.application.request.OrderCreateRequest;
+import com.entity_isolation.isolation.orders.application.request.OrderCreateRequestNew;
+import com.entity_isolation.isolation.orders.application.response.OrderCreateResponse;
 import com.entity_isolation.isolation.orders.model.Order;
 import com.entity_isolation.isolation.orders.model.dto.OrderCustomerDto;
 import com.entity_isolation.isolation.orders.model.dto.OrderPaymentInfoDto;
