@@ -11,13 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +31,8 @@ class WebClientLegacyServiceTest {
 
     @Mock
     JpaRepository repository;
+    @Mock
+    WebClientUtil webClientUtil;
 
     @InjectMocks
     WebClientLegacyService webClientLegacyService;
@@ -67,7 +72,7 @@ class WebClientLegacyServiceTest {
 
         mockWebServer.enqueue(mockResponse);
 
-        when(WebClientUtil.getBaseUrl(any())).thenReturn(mockWebClient);
+        when(webClientUtil.get(anyString())).thenReturn(mockWebClient);
 
         // when
         boolean result = webClientLegacyService.callWebClient();
@@ -78,8 +83,8 @@ class WebClientLegacyServiceTest {
     }
 
     @Test
-    @DisplayName("자사몰 환불 요청 실패 테스트 - 400 error")
-    void refund_fail_for400() {
+    @DisplayName("실패 테스트 - 400 error")
+    void fail400() {
 
         // given
         String bodyJson = """
@@ -95,21 +100,18 @@ class WebClientLegacyServiceTest {
 
         mockWebServer.enqueue(mockResponse);
 
-        when(webService.webClient(any())).thenReturn(mockWebClient);
-
-        // when
-        Delivery delivery = DeliveryFixture.create();
+        when(webClientUtil.get(anyString())).thenReturn(mockWebClient);
 
         // then
-        assertThatThrownBy(() -> orderEcomService.refund(delivery))
-            .isInstanceOf(EcomApiException.class)
-            .hasMessage("4xx 자사몰 시스템 호출 오류.");
+        assertThatThrownBy(() -> webClientLegacyService.callWebClient())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage("400 에러 입니다");
 
     }
 
     @Test
-    @DisplayName("자사몰 환불 요청 실패 테스트 - 500 error")
-    void refund_fail_for500() {
+    @DisplayName("요청 실패 테스트 - 500 error")
+    void fail500() {
 
         // given
         String bodyJson = """
@@ -125,47 +127,11 @@ class WebClientLegacyServiceTest {
 
         mockWebServer.enqueue(mockResponse);
 
-        when(webService.webClient(any())).thenReturn(mockWebClient);
-
-        // when
-        Delivery delivery = DeliveryFixture.create();
+        when(webClientUtil.get(anyString())).thenReturn(mockWebClient);
 
         // then
-        assertThatThrownBy(() -> orderEcomService.refund(delivery))
-            .isInstanceOf(EcomApiException.class)
-            .hasMessage("5xx 자사몰 시스템 호출 오류.");
+        assertThatThrownBy(() -> webClientLegacyService.callWebClient())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage("500 에러 입니다.");
     }
-
-    @Test
-    @DisplayName("자사몰 환불 요청 실패 테스트 - 결과 false")
-    void refund_fail() {
-
-        // given
-        String bodyJson = """
-                {
-                  "result" : false,
-                  "status" : 400,
-                  "message" : "refund error",
-                  "subCode" : "INVALID_ACCESS"
-                }
-            """;
-
-        MockResponse mockResponse = new MockResponse()
-            .setBody(bodyJson)
-            .addHeader("Content-Type", "application/json")
-            .setResponseCode(200);
-
-        mockWebServer.enqueue(mockResponse);
-
-        when(webService.webClient(any())).thenReturn(mockWebClient);
-
-        // when
-        Delivery delivery = DeliveryFixture.create();
-
-        // then
-        assertThatThrownBy(() -> orderEcomService.refund(delivery))
-            .isInstanceOf(EcomApiException.class)
-            .hasMessage("refund error");
-    }
-
 }

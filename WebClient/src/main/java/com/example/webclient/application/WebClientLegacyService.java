@@ -14,10 +14,11 @@ import java.util.Objects;
 public class WebClientLegacyService {
 
     private final JpaRepository repository;
+    private final WebClientUtil webClientUtil;
 
     public boolean callWebClient() {
 
-        String string = WebClientUtil.getBaseUrl("/test/할수/없는/주소지롱")
+        String string = webClientUtil.get("/test/할수/없는/주소지롱")
             .put()
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->

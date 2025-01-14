@@ -17,4 +17,15 @@ public class WebClientUtil {
             .mutate()
             .build();
     }
+
+    public WebClient get(final String uri) {
+        return WebClient.builder()
+            .baseUrl(uri)
+            .defaultHeader(
+                HttpHeaders.CONTENT_TYPE,
+                MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+            .build()
+            .mutate()
+            .build();
+    }
 }
