@@ -13,7 +13,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class WebClientLegacyService {
 
-    private final JpaRepository repository;
     private final WebClientUtil webClientUtil;
 
     public boolean callWebClient() {
