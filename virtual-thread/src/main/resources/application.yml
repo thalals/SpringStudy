@@ -1,0 +1,17 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3309/hmin?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+
+  threads:
+    virtual:
+      enabled: false
