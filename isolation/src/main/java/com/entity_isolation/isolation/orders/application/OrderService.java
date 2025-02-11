@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ExceptionService exceptionService;
 
     @Transactional
     public OrderCreateResponse create(final OrderCreateRequest request) {
@@ -28,6 +29,8 @@ public class OrderService {
             );
 
         final Order orderToEntity = request.toEntity();
+
+        exceptionService.exception();
 
         orderRepository.save(order);
         orderRepository.save(orderToRequest);
