@@ -1,15 +1,14 @@
 package com.example.prefix_url.config;
 
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
 
 @Configuration
 public class WebMvcHandlerConfig implements WebMvcRegistrations {
@@ -20,7 +19,6 @@ public class WebMvcHandlerConfig implements WebMvcRegistrations {
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
         return new ApiVersionRequestMappingHandlerMapping();
     }
-
 
     private static class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 
@@ -52,6 +50,7 @@ public class WebMvcHandlerConfig implements WebMvcRegistrations {
 
             RequestMappingInfo versionMapping = RequestMappingInfo.paths(versionPrefix).build();
             return versionMapping.combine(mappingInfo);
+
         }
 
         private Set<String> getPatternHandlerPatternList(final RequestMappingInfo mappingInfo) {

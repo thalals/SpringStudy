@@ -8,13 +8,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class StarController {
 
     @GetMapping("/star")
-    public void fooV1() {
+    public String fooV1() {
 
+        return "foo v1";
     }
 
     @ApiVersion("v2")
     @GetMapping("/star")
-    public void fooV2() {
+    public String fooV2() {
 
+        return "foo v2";
+    }
+
+    @ApiVersion("v3")
+    @GetMapping("/star")
+    public String fooV3() {
+
+        return "foo v3";
     }
 }
