@@ -1,10 +1,9 @@
 package com.example.rest_client
 
-import org.springframework.web.client.RestClient
+import com.example.rest_client.application.RestClientConfig
 import kotlin.test.Test
 
-class RestClientConfigTest{
-
+class RestClientConfigTest {
     private val restClientConfig = RestClientConfig()
 
     @Test
