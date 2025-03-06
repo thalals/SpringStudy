@@ -1,6 +1,5 @@
-package com.example.rest_client
+package com.example.rest_client.application
 
-import com.example.rest_client.application.RestClientConfig
 import kotlin.test.Test
 
 class RestClientConfigTest {
