@@ -5,7 +5,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface DemoHttpInterface {
+fun interface DemoHttpInterface {
     @GetExchange("/posts")
     fun getPosts(): ResponseEntity<String>
 }
